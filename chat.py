@@ -6,8 +6,11 @@ import numpy as np
 
 # Configuração das chaves
 
-
-# Configurar a chave de API do OpenAI
+# Configuração das chaves usando variáveis de ambiente
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east1-gcp")
+INDEX_NAME = "multilingual-e5-large"
 openai.api_key = OPENAI_API_KEY
 
 # Inicialize o Pinecone
