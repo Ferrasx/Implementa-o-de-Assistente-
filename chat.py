@@ -1,3 +1,9 @@
+pip install streamlit
+pip install openai
+pip install pinecone-client
+pip install PyPDF2
+pip install sentence-transformers
+
 import openai
 from pinecone import Pinecone, ServerlessSpec
 from PyPDF2 import PdfReader
