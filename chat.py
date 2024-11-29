@@ -6,9 +6,10 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import os
 # Configuração das chaves usando variáveis de ambiente
-OPENAI_API_KEY = "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"
-PINECONE_API_KEY = "pcsk_77Mnm8_NQVjdoykkLdzPkuGmcbfN1MJ2kUK3u64iZMyxGVwFpvCEwkg7K6u17pGFfqRRXD"
-PINECONE_ENVIRONMENT = "us-east1-gcp"
+# Configuração das chaves usando variáveis de ambiente
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east1-gcp")
 INDEX_NAME = "multilingual-e5-large"
 # Configurar a chave de API do OpenAI
 openai.api_key = OPENAI_API_KEY
