@@ -4,17 +4,15 @@ from pinecone import Pinecone, ServerlessSpec
 from PyPDF2 import PdfReader
 from sentence_transformers import SentenceTransformer
 import numpy as np
-
-# Configuração das chaves
-
+import os
 # Configuração das chaves usando variáveis de ambiente
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east1-gcp")
 INDEX_NAME = "multilingual-e5-large"
-openai.api_key = OPENAI_API_KEY
 
-# Inicialize o Pinecone
+# Configurar a chave de API do OpenAI
+openai.api_key = OPENAI_API_KEY
 pc = Pinecone(api_key=PINECONE_API_KEY)
 
 # Verifique se o índice já existe, caso contrário, crie-o
