@@ -1,9 +1,8 @@
 import openai
-from pinecone import Pinecone, ServerlessSpec
 from PyPDF2 import PdfReader
 from sentence_transformers import SentenceTransformer
-import numpy as np
 import streamlit as st
+import os
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 INDEX_NAME = "multilingual-e5-large"
 # Configurar a chave de API do OpenAI
