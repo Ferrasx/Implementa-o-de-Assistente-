@@ -13,6 +13,8 @@ PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east1-gcp")
 INDEX_NAME = "multilingual-e5-large"
 # Configurar a chave de API do OpenAI
 openai.api_key = OPENAI_API_KEY
+
+# Inicialize o Pinecone
 pc = Pinecone(api_key=PINECONE_API_KEY)
 
 # Verifique se o índice já existe, caso contrário, crie-o
@@ -53,7 +55,7 @@ def store_embeddings(embeddings, sentences):
 def query_assistant(question):
     # Gerar o embedding da pergunta
     query_embedding = embedding_model.encode([question])[0]
-    
+
     # Realizar a consulta ao Pinecone usando argumentos nomeados
     results = pinecone_index.query(
         vector=query_embedding.tolist(),
@@ -61,7 +63,7 @@ def query_assistant(question):
         include_values=False,
         include_metadata=True
     )
-    
+
     # Gerar a resposta usando o OpenAI
     context = " ".join([match["metadata"]["text"] for match in results["matches"]])
     response = openai.ChatCompletion.create(
