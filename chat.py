@@ -4,7 +4,9 @@ from PyPDF2 import PdfReader
 from sentence_transformers import SentenceTransformer
 import numpy as np
 import streamlit as st
-
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT")
 st.write("Variáveis de Ambiente:")
 st.write(f"OPENAI_API_KEY (os.getenv): {os.getenv('OPENAI_API_KEY')}")
 st.write(f"PINECONE_API_KEY (os.getenv): {os.getenv('PINECONE_API_KEY')}")
