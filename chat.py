@@ -1,16 +1,15 @@
-
 import openai
 from pinecone import Pinecone, ServerlessSpec
 from PyPDF2 import PdfReader
 from sentence_transformers import SentenceTransformer
 import numpy as np
-import os
-# Configuração das chaves usando variáveis de ambiente
-# Configuração das chaves usando variáveis de ambiente
+import streamlit as st
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east1-gcp")
 INDEX_NAME = "multilingual-e5-large"
+
 # Configurar a chave de API do OpenAI
 openai.api_key = OPENAI_API_KEY
 
@@ -35,9 +34,9 @@ pinecone_index = pc.Index(INDEX_NAME)
 # Modelo de embeddings
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-# Funções para trabalhar com PDF e embeddings
-def extract_text_from_pdf(pdf_path):
-    reader = PdfReader(pdf_path)
+# Funções para extrair texto de PDF e gerar embeddings
+def extract_text_from_pdf(pdf_file):
+    reader = PdfReader(pdf_file)
     text = ""
     for page in reader.pages:
         text += page.extract_text()
@@ -56,7 +55,7 @@ def query_assistant(question):
     # Gerar o embedding da pergunta
     query_embedding = embedding_model.encode([question])[0]
 
-    # Realizar a consulta ao Pinecone usando argumentos nomeados
+    # Realizar a consulta ao Pinecone
     results = pinecone_index.query(
         vector=query_embedding.tolist(),
         top_k=3,
@@ -76,24 +75,23 @@ def query_assistant(question):
     )
     return response["choices"][0]["message"]["content"]
 
-# Função principal
-def main():
-    print("=== Assistente Conversacional ===")
-    pdf_path = input("Insira o caminho do arquivo PDF: ").strip()
-    text = extract_text_from_pdf(pdf_path)
+# Interface com Streamlit
+st.title("Assistente Conversacional com Pinecone e OpenAI")
+st.write("Carregue um arquivo PDF e faça perguntas baseadas no conteúdo!")
 
-    print("Processando o arquivo PDF...")
-    sentences, embeddings = generate_embeddings(text)
-    store_embeddings(embeddings, sentences)
-    print("Arquivo processado com sucesso e embeddings armazenados no Pinecone!")
+uploaded_file = st.file_uploader("Envie um arquivo PDF", type="pdf")
 
-    while True:
-        question = input("\nDigite sua pergunta (ou 'sair' para encerrar): ").strip()
-        if question.lower() == "sair":
-            break
-        answer = query_assistant(question)
-        print(f"Resposta: {answer}")
-
-# Executa o programa
-if __name__ == "__main__":
-    main()
+if uploaded_file is not None:
+    with st.spinner("Processando o arquivo PDF..."):
+        text = extract_text_from_pdf(uploaded_file)
+        sentences, embeddings = generate_embeddings(text)
+        store_embeddings(embeddings, sentences)
+        st.success("Arquivo processado com sucesso e embeddings armazenados no Pinecone!")
+    
+    st.write("Agora, você pode fazer perguntas sobre o conteúdo do arquivo.")
+    question = st.text_input("Digite sua pergunta:")
+    
+    if question:
+        with st.spinner("Gerando resposta..."):
+            answer = query_assistant(question)
+            st.write("Resposta:", answer)
