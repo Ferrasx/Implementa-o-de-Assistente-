@@ -10,7 +10,6 @@ PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east1-gcp")
 INDEX_NAME = "multilingual-e5-large"
 
-
 # Configurar a chave de API do OpenAI
 openai.api_key = OPENAI_API_KEY
 
@@ -88,10 +87,10 @@ if uploaded_file is not None:
         sentences, embeddings = generate_embeddings(text)
         store_embeddings(embeddings, sentences)
         st.success("Arquivo processado com sucesso e embeddings armazenados no Pinecone!")
-    
+
     st.write("Agora, você pode fazer perguntas sobre o conteúdo do arquivo.")
     question = st.text_input("Digite sua pergunta:")
-    
+
     if question:
         with st.spinner("Gerando resposta..."):
             answer = query_assistant(question)
