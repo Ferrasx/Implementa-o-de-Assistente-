@@ -1,5 +1,7 @@
+streamlit==1.25.0
 openai==0.28
 pinecone-client==2.2.3
 sentence-transformers==2.2.2
 PyPDF2==3.0.1
-numpy==1.23.5  # ou 1.24.4
+numpy==1.26.0
+setuptools==68.0.0
