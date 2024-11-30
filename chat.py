@@ -10,6 +10,7 @@ PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENVIRONMENT = os.getenv("PINECONE_ENVIRONMENT", "us-east1-gcp")
 INDEX_NAME = "multilingual-e5-large"
 
+
 # Configurar a chave de API do OpenAI
 openai.api_key = OPENAI_API_KEY
 
